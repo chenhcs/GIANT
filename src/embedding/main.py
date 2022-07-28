@@ -76,7 +76,3 @@ def main(args):
 
 args = parse_args()
 main(args)
-
-#run_rna_atac_slide_part7 '--walk-length' 10, '--num-walks' 20, '--window-size' 5, '--p' 0.2, '--q' 5 reg = 0
-#run_rna_atac_slide_part8 '--walk-length' 10, '--num-walks' 20, '--window-size' 5, '--p' 0.2, '--q' 5 reg = 1
-#run_rna_atac_slide_part9 '--walk-length' 10, '--num-walks' 20, '--window-size' 5, '--p' 0.2, '--q' 5 reg = 5
