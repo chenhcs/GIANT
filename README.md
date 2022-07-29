@@ -49,11 +49,28 @@ optional arguments:
 Run the following commands to build gene-TF hypergraphs for scATAC-seq data:
 ```
 cd src/build_graphs
-python
+python atacseq_hypergraph.py --bpupstream 500 --datadir "path/to/peak_files" --genescopefile "path/to/gene_scope" --generangefile "path/to/gene_ranges" --outdir "path/to/out_dir"
 ```
 
 The usage of this command is listed as follows:
 ```
+usage: atacseq_hypergraph.py [-h] [--bpupstream BPUPSTREAM] [--datadir DATADIR]
+                             [--genescopefile GENESCOPEFILE] [--generangefile GENERANGEFILE]
+                             [--outdir OUTDIR]
+
+Build gene-TF hypergraphs
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --bpupstream BPUPSTREAM
+                        Promoter region: within how many base pairs upstream of the transcription start
+                        site. Default is 500.
+  --datadir DATADIR     Path to a directory that saves the h5ad files of gene expression
+  --genescopefile GENESCOPEFILE
+                        Path to a file that lists the genes considered in this study
+  --generangefile GENERANGEFILE
+                        Path to a file that lists the genomic coordinates of genes
+  --outdir OUTDIR       Path to a directory where the graphs will be saved
 ```
 
 Run the following commands to build spatial co-expression hypergraphs for Slide-seq data:
@@ -136,7 +153,8 @@ optional arguments:
   --undirected
 ```
 
-### Identify enriched functions in different parts of the embedding space
+### Identify enriched functions or gene regulons in different parts of the embedding space
+
 ### Infer novel gene functions
 
 ## Credits
