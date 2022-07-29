@@ -23,7 +23,7 @@ python setup.py build_ext --inplace
 
 ## Usage
 ### Build gene graphs
-Run the following commands to build co-expression graphs for scRNA-seq data or Slide-seq data:
+- Run the following commands to build co-expression graphs for scRNA-seq data or Slide-seq data:
 ```
 cd src/build_graphs
 python coexpression_knn_graph.py --K 10 --datatype "rna" --datadir "path/to/h5ad" --genescopefile "path/to/gene_scope" --outdir "path/to/out_dir"
@@ -46,7 +46,7 @@ optional arguments:
   --outdir OUTDIR       Path to a directory where the graphs will be saved
 ```
 
-Run the following commands to build gene-TF hypergraphs for scATAC-seq data:
+- Run the following commands to build gene-TF hypergraphs for scATAC-seq data:
 ```
 cd src/build_graphs
 python atacseq_hypergraph.py --bpupstream 500 --datadir "path/to/peak_files" --genescopefile "path/to/gene_scope" --generangefile "path/to/gene_ranges" --outdir "path/to/out_dir"
@@ -73,20 +73,30 @@ optional arguments:
   --outdir OUTDIR       Path to a directory where the graphs will be saved
 ```
 
-Run the following commands to build spatial co-expression hypergraphs for Slide-seq data:
+- Run the following commands to build spatial co-expression hypergraphs for Slide-seq data:
 ```
 cd src/build_graphs
-python
+python spatial_coexpression_knn_graph.py --K 10 --datadir "path/to/h5ad" --genescopefile "path/to/gene_scope" --outdir "path/to/out_dir"
 ```
 
 The usage of this command is listed as follows:
 ```
+usage: spatial_coexpression_knn_graph.py [-h] [--K K] [--datadir DATADIR] [--genescopefile GENESCOPEFILE]
+                                         [--outdir OUTDIR]
+
+Build gene-TF hypergraphs
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --K K                 Number of nearest neighbors. Default is 10.
+  --datadir DATADIR     Path to a h5ad file of gene expression and cell locations
+  --genescopefile GENESCOPEFILE
+                        Path to a file that lists the genes considered in this study
+  --outdir OUTDIR       Path to a directory where the graphs will be saved
 ```
 
-
-
 ### Build dendrogram of graphs
-Run the following commands to build dendrogram:
+- Run the following commands to build dendrogram:
 ```
 cd src/build_dendrogram
 python build_dendrogram.py --K 50 --degenedir "path/to/de_genes" --graphdir "path/to/gene_graphs" --outdir "path/to/save_output" --figdir "path/to/save_output_figure"
@@ -111,7 +121,7 @@ optional arguments:
 ```
 
 ### Learn gene embeddings
-Run the following commands to learn gene embeddings:
+- Run the following commands to learn gene embeddings:
 ```
 cd src/embedding
 python main.py --input "path/to/graph.list" --outdir "emb" --hierarchy "path/to/graph.hierarchy" --iter 150 --regstrength 1 --workers 8 --dimension 128
