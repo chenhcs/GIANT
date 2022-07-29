@@ -26,11 +26,24 @@ python setup.py build_ext --inplace
 Run the following commands to build co-expression graphs for scRNA-seq data or Slide-seq data:
 ```
 cd src/build_graphs
-python
+python coexpression_knn_graph.py --K 10 --datatype "rna" --datadir "path/to/h5ad" --genescopefile "path/to/gene_scope" --outdir "path/to/out_dir"
 ```
 
 The usage of this command is listed as follows:
 ```
+usage: coexpression_knn_graph.py [-h] [--K K] [--datatype DATATYPE] [--datadir DATADIR]
+                                 [--genescopefile GENESCOPEFILE] [--outdir OUTDIR]
+
+Build co-expression graphs
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --K K                 Number of nearest neighbors
+  --datatype DATATYPE   rna or slide
+  --datadir DATADIR     Path to a directory that saves the h5ad files of gene expression
+  --genescopefile GENESCOPEFILE
+                        Path to the file that lists the genes considered in this study
+  --outdir OUTDIR       Path to a directory where the graphs will be saved
 ```
 
 Run the following commands to build gene-TF hypergraphs for scATAC-seq data:
@@ -46,7 +59,7 @@ The usage of this command is listed as follows:
 Run the following commands to build spatial co-expression hypergraphs for Slide-seq data:
 ```
 cd src/build_graphs
-python 
+python
 ```
 
 The usage of this command is listed as follows:
@@ -64,21 +77,20 @@ python build_dendrogram.py --K 50 --degenedir "path/to/de_genes" --graphdir "pat
 
 The usage of this command is listed as follows:
 ```
-usage: build_dendrogram.py [-h] [--K [K]] [--degenedir [DEGENEDIR]] [--graphdir [GRAPHDIR]] [--outdir [OUTDIR]]
-                           [--figdir [FIGDIR]]
+usage: build_dendrogram.py [-h] [--K K] [--degenedir DEGENEDIR] [--graphdir GRAPHDIR] [--outdir OUTDIR]
+                           [--figdir FIGDIR]
 
 Build dendrogram of graphs
 
 optional arguments:
   -h, --help            show this help message and exit
-  --K [K]               The number of top differentailly expressed genes considered to measure cell cluster
+  --K K                 The number of top differentailly expressed genes considered to measure cell cluster
                         similarities
-  --degenedir [DEGENEDIR]
+  --degenedir DEGENEDIR
                         Path to the lists of differentailly expressed genes of cell clusters
-  --graphdir [GRAPHDIR]
-                        Path to the gene graphs of cell clusters
-  --outdir [OUTDIR]     Path to a directory where the dendrogram is saved for the input of the embedding algorithm
-  --figdir [FIGDIR]     Path to a directory where the figure of the dendrogram is saved
+  --graphdir GRAPHDIR   Path to the gene graphs of cell clusters
+  --outdir OUTDIR       Path to a directory where the dendrogram is saved for the input of the embedding algorithm
+  --figdir FIGDIR       Path to a directory where the figure of the dendrogram is saved
 ```
 
 ### Learn gene embeddings
@@ -90,7 +102,7 @@ python main.py --input "path/to/graph.list" --outdir "emb" --hierarchy "path/to/
 
 The usage of this command is listed as follows:
 ```
-usage: main.py [-h] [--input [INPUT]] [--outdir [OUTDIR]] [--hierarchy [HIERARCHY]] [--dimension DIMENSION]
+usage: main.py [-h] [--input INPUT] [--outdir OUTDIR] [--hierarchy HIERARCHY] [--dimension DIMENSION]
                [--walk-length WALK_LENGTH] [--num-walks NUM_WALKS] [--window-size WINDOW_SIZE] [--iter ITER]
                [--workers WORKERS] [--regstrength REGSTRENGTH] [--p P] [--q Q] [--l_rate L_RATE] [--weighted]
                [--unweighted] [--directed] [--undirected]
@@ -99,9 +111,9 @@ Run encoder
 
 optional arguments:
   -h, --help            show this help message and exit
-  --input [INPUT]       Path to a file containing locations of network layers
-  --outdir [OUTDIR]     Path to a directory where results are saved
-  --hierarchy [HIERARCHY]
+  --input INPUT         Path to a file containing locations of network layers
+  --outdir OUTDIR       Path to a directory where results are saved
+  --hierarchy HIERARCHY
                         Path to a file containing multi-layer network hierarchy
   --dimension DIMENSION
                         Number of dimensions. Default is 128.
