@@ -12,13 +12,13 @@ from encoder import encoder
 def parse_args():
     parser = argparse.ArgumentParser(description='Run encoder')
 
-    parser.add_argument('--input', nargs='?', default='',
+    parser.add_argument('--input', default='',
                         help='Path to a file containing locations of network layers')
 
-    parser.add_argument('--outdir', nargs='?', default='emb',
+    parser.add_argument('--outdir', default='emb',
                         help='Path to a directory where results are saved')
 
-    parser.add_argument('--hierarchy', nargs='?', default='',
+    parser.add_argument('--hierarchy', default='',
                         help='Path to a file containing multi-layer network hierarchy')
 
     parser.add_argument('--dimension', type=int, default=128,
