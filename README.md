@@ -23,28 +23,13 @@ python setup.py build_ext --inplace
 ```
 
 ## Usage
+Use `python script.py --help` to check the specific usage of each command.
+
 ### Build gene graphs
 - Run the following commands to build co-expression graphs for scRNA-seq data or Slide-seq data:
 ```
 cd src/build_graphs
 python coexpression_knn_graph.py --K 10 --datatype "rna" --datadir "path/to/h5ad" --genescopefile "path/to/gene_scope" --outdir "path/to/out_dir"
-```
-
-Usage of commands:
-```
-usage: coexpression_knn_graph.py [-h] [--K K] [--datatype DATATYPE] [--datadir DATADIR]
-                                 [--genescopefile GENESCOPEFILE] [--outdir OUTDIR]
-
-Build co-expression graphs
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --K K                 Number of nearest neighbors
-  --datatype DATATYPE   rna or slide
-  --datadir DATADIR     Path to a directory that saves the h5ad files of gene expression
-  --genescopefile GENESCOPEFILE
-                        Path to the file that lists the genes considered in this study
-  --outdir OUTDIR       Path to a directory where the graphs will be saved
 ```
 
 - Run the following commands to build gene-TF hypergraphs for scATAC-seq data:
@@ -53,47 +38,10 @@ cd src/build_graphs
 python atacseq_hypergraph.py --bpupstream 500 --datadir "path/to/peak_files" --genescopefile "path/to/gene_scope" --generangefile "path/to/gene_ranges" --outdir "path/to/out_dir"
 ```
 
-Usage of commands:
-```
-usage: atacseq_hypergraph.py [-h] [--bpupstream BPUPSTREAM] [--datadir DATADIR]
-                             [--genescopefile GENESCOPEFILE] [--generangefile GENERANGEFILE]
-                             [--outdir OUTDIR]
-
-Build gene-TF hypergraphs
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --bpupstream BPUPSTREAM
-                        Promoter region: within how many base pairs upstream of the transcription start
-                        site. Default is 500.
-  --datadir DATADIR     Path to a directory that saves the h5ad files of gene expression
-  --genescopefile GENESCOPEFILE
-                        Path to a file that lists the genes considered in this study
-  --generangefile GENERANGEFILE
-                        Path to a file that lists the genomic coordinates of genes
-  --outdir OUTDIR       Path to a directory where the graphs will be saved
-```
-
 - Run the following commands to build spatial co-expression hypergraphs for Slide-seq data:
 ```
 cd src/build_graphs
 python spatial_coexpression_knn_graph.py --K 10 --datadir "path/to/h5ad" --genescopefile "path/to/gene_scope" --outdir "path/to/out_dir"
-```
-
-Usage of commands:
-```
-usage: spatial_coexpression_knn_graph.py [-h] [--K K] [--datadir DATADIR] [--genescopefile GENESCOPEFILE]
-                                         [--outdir OUTDIR]
-
-Build gene-TF hypergraphs
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --K K                 Number of nearest neighbors. Default is 10.
-  --datadir DATADIR     Path to a h5ad file of gene expression and cell locations
-  --genescopefile GENESCOPEFILE
-                        Path to a file that lists the genes considered in this study
-  --outdir OUTDIR       Path to a directory where the graphs will be saved
 ```
 
 ### Build dendrogram of graphs
@@ -103,24 +51,6 @@ cd src/build_dendrogram
 python build_dendrogram.py --K 50 --degenedir "path/to/de_genes" --graphdir "path/to/gene_graphs" --outdir "path/to/save_output" --figdir "path/to/save_output_figure"
 ```
 
-Usage of commands:
-```
-usage: build_dendrogram.py [-h] [--K K] [--degenedir DEGENEDIR] [--graphdir GRAPHDIR] [--outdir OUTDIR]
-                           [--figdir FIGDIR]
-
-Build dendrogram of graphs
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --K K                 The number of top differentailly expressed genes considered to measure cell cluster
-                        similarities
-  --degenedir DEGENEDIR
-                        Path to the lists of differentailly expressed genes of cell clusters
-  --graphdir GRAPHDIR   Path to the gene graphs of cell clusters
-  --outdir OUTDIR       Path to a directory where the dendrogram is saved for the input of the embedding algorithm
-  --figdir FIGDIR       Path to a directory where the figure of the dendrogram is saved
-```
-
 ### Learn gene embeddings
 - Run the following commands to learn gene embeddings:
 ```
@@ -128,73 +58,20 @@ cd src/embedding
 python main.py --input "path/to/graph.list" --outdir "emb" --hierarchy "path/to/graph.hierarchy" --iter 150 --regstrength 1 --workers 8 --dimension 128
 ```
 
-Usage of commands:
-```
-usage: main.py [-h] [--input INPUT] [--outdir OUTDIR] [--hierarchy HIERARCHY] [--dimension DIMENSION]
-               [--walk-length WALK_LENGTH] [--num-walks NUM_WALKS] [--window-size WINDOW_SIZE] [--iter ITER]
-               [--workers WORKERS] [--regstrength REGSTRENGTH] [--p P] [--q Q] [--l_rate L_RATE] [--weighted]
-               [--unweighted] [--directed] [--undirected]
-
-Run encoder
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --input INPUT         Path to a file containing locations of network layers
-  --outdir OUTDIR       Path to a directory where results are saved
-  --hierarchy HIERARCHY
-                        Path to a file containing multi-layer network hierarchy
-  --dimension DIMENSION
-                        Number of dimensions. Default is 128.
-  --walk-length WALK_LENGTH
-                        Length of walk per source. Default is 10.
-  --num-walks NUM_WALKS
-                        Number of walks per source. Default is 20.
-  --window-size WINDOW_SIZE
-                        Context size for optimization. Default is 5.
-  --iter ITER           Number of epochs in SGD
-  --workers WORKERS     Number of parallel workers. Default is 8.
-  --regstrength REGSTRENGTH
-                        Hierarchical regularization strength. Default is 1.
-  --p P                 Return hyperparameter. Default is 1.
-  --q Q                 Inout hyperparameter. Default is 1.
-  --l_rate L_RATE       learning rate. Default is 0.05.
-  --weighted            Boolean specifying (un)weighted. Default is unweighted.
-  --unweighted
-  --directed            Graph is (un)directed. Default is undirected.
-  --undirected
-```
-
 ### Identify enriched functions or gene regulons in different parts of the embedding space
 - Run the following commands to split the embedding space into components (cluster genes in the whole space), then run enrichment analysis for each embedding component:
 ```
 cd src/analysis
 python cluster_genes.py --emb "dir/to/gene_embedding" --resolution 50 --nneighbors 30 --annotationfile "dir/to/gene_annotations" --outdir "dir/to/out_dir"
-python GO_TF_enrichment.py "dir/to/cluster_0.txt" "dir/to/population.txt" "gene_human_graph.gaf" --ev_exc=IEA --pval=0.05 --method=fdr_bh --pval_field=fdr_bh
-```
-
-Usage of commands:
-```
-usage: cluster_genes.py [-h] [--emb EMB] [--resolution RESOLUTION] [--nneighbors NNEIGHBORS]
-                        [--annotationfile ANNOTATIONFILE] [--outdir OUTDIR]
-
-Cluster genes in the sapce using the Leiden algorithm
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --emb EMB             Gene embedding file
-  --resolution RESOLUTION
-                        Resolution of the Leiden algorithm
-  --nneighbors NNEIGHBORS
-                        Number of neighbors for each point in the Leiden algorithm
-  --annotationfile ANNOTATIONFILE
-                        Path to a file of gene annotations or gene-TF associations
-  --outdir OUTDIR       Path to a directory where the gene lists in clusters will be saved
+python GO_TF_enrichment.py "dir/to/cluster_0.txt" "dir/to/population.txt" "dir/to/gene_human_graph.gaf" --ev_exc=IEA --pval=0.05 --method=fdr_bh --pval_field=fdr_bh
 ```
 
 ### Infer novel gene functions
 - Run the following commands to learn gene embeddings:
 ```
 cd src/analysis
+python neighbors_in_graph.py --emb "dir/to/gene_embedding" --outdir "dir/to/out_dir"
+python GO_enrichment_in_neighbors.py "dir/to/neighbor_gene_list.txt" "dir/to/population.txt" "dir/to/gene_human_graph.gaf" --ev_exc=IEA --pval=0.05 --method=fdr_bh --pval_field=fdr_bh
 ```
 
 ## Credits
