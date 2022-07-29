@@ -10,6 +10,7 @@ GIANT (Gene-based data Integration and ANalysis Technique) is a method for unifi
 - networkx 2.6.3</br>
 - numpy 1.20.3</br>
 - pandas 1.3.4</br>
+- pyensembl 1.9.4</br>
 - scanpy 1.8.2</br>
 - scikit-learn 1.0.1</br>
 - scipy 1.7.2</br>
@@ -29,7 +30,7 @@ cd src/build_graphs
 python coexpression_knn_graph.py --K 10 --datatype "rna" --datadir "path/to/h5ad" --genescopefile "path/to/gene_scope" --outdir "path/to/out_dir"
 ```
 
-The usage of this command is listed as follows:
+Usage of commands:
 ```
 usage: coexpression_knn_graph.py [-h] [--K K] [--datatype DATATYPE] [--datadir DATADIR]
                                  [--genescopefile GENESCOPEFILE] [--outdir OUTDIR]
@@ -52,7 +53,7 @@ cd src/build_graphs
 python atacseq_hypergraph.py --bpupstream 500 --datadir "path/to/peak_files" --genescopefile "path/to/gene_scope" --generangefile "path/to/gene_ranges" --outdir "path/to/out_dir"
 ```
 
-The usage of this command is listed as follows:
+Usage of commands:
 ```
 usage: atacseq_hypergraph.py [-h] [--bpupstream BPUPSTREAM] [--datadir DATADIR]
                              [--genescopefile GENESCOPEFILE] [--generangefile GENERANGEFILE]
@@ -79,7 +80,7 @@ cd src/build_graphs
 python spatial_coexpression_knn_graph.py --K 10 --datadir "path/to/h5ad" --genescopefile "path/to/gene_scope" --outdir "path/to/out_dir"
 ```
 
-The usage of this command is listed as follows:
+Usage of commands:
 ```
 usage: spatial_coexpression_knn_graph.py [-h] [--K K] [--datadir DATADIR] [--genescopefile GENESCOPEFILE]
                                          [--outdir OUTDIR]
@@ -102,7 +103,7 @@ cd src/build_dendrogram
 python build_dendrogram.py --K 50 --degenedir "path/to/de_genes" --graphdir "path/to/gene_graphs" --outdir "path/to/save_output" --figdir "path/to/save_output_figure"
 ```
 
-The usage of this command is listed as follows:
+Usage of commands:
 ```
 usage: build_dendrogram.py [-h] [--K K] [--degenedir DEGENEDIR] [--graphdir GRAPHDIR] [--outdir OUTDIR]
                            [--figdir FIGDIR]
@@ -127,7 +128,7 @@ cd src/embedding
 python main.py --input "path/to/graph.list" --outdir "emb" --hierarchy "path/to/graph.hierarchy" --iter 150 --regstrength 1 --workers 8 --dimension 128
 ```
 
-The usage of this command is listed as follows:
+Usage of commands:
 ```
 usage: main.py [-h] [--input INPUT] [--outdir OUTDIR] [--hierarchy HIERARCHY] [--dimension DIMENSION]
                [--walk-length WALK_LENGTH] [--num-walks NUM_WALKS] [--window-size WINDOW_SIZE] [--iter ITER]
@@ -164,8 +165,37 @@ optional arguments:
 ```
 
 ### Identify enriched functions or gene regulons in different parts of the embedding space
+- Run the following commands to split the embedding space into components (cluster genes in the whole space), then run enrichment analysis for each embedding component:
+```
+cd src/analysis
+python cluster_genes.py --emb "dir/to/gene_embedding" --resolution 50 --nneighbors 30 --annotationfile "dir/to/gene_annotations" --outdir "dir/to/out_dir"
+python GO_TF_enrichment.py "dir/to/cluster_0.txt" "dir/to/population.txt" "gene_human_graph.gaf" --ev_exc=IEA --pval=0.05 --method=fdr_bh --pval_field=fdr_bh
+```
+
+Usage of commands:
+```
+usage: cluster_genes.py [-h] [--emb EMB] [--resolution RESOLUTION] [--nneighbors NNEIGHBORS]
+                        [--annotationfile ANNOTATIONFILE] [--outdir OUTDIR]
+
+Cluster genes in the sapce using the Leiden algorithm
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --emb EMB             Gene embedding file
+  --resolution RESOLUTION
+                        Resolution of the Leiden algorithm
+  --nneighbors NNEIGHBORS
+                        Number of neighbors for each point in the Leiden algorithm
+  --annotationfile ANNOTATIONFILE
+                        Path to a file of gene annotations or gene-TF associations
+  --outdir OUTDIR       Path to a directory where the gene lists in clusters will be saved
+```
 
 ### Infer novel gene functions
+- Run the following commands to learn gene embeddings:
+```
+cd src/analysis
+```
 
 ## Credits
 The software is an implementation of the method GIANT, jointly developed by Hao Chen, Nam D. Nguyen, Matthew Ruffalo, and Ziv Bar-Joseph from the [System Biology Group @ Carnegie Mellon University](http://sb.cs.cmu.edu/).
