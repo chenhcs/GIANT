@@ -23,15 +23,72 @@ python setup.py build_ext --inplace
 
 ## Usage
 ### Build gene graphs
+Run the following commands to build co-expression graphs for scRNA-seq data or Slide-seq data:
+```
+cd src/build_graphs
+python
+```
+
+The usage of this command is listed as follows:
+```
+```
+
+Run the following commands to build gene-TF hypergraphs for scATAC-seq data:
+```
+cd src/build_graphs
+python
+```
+
+The usage of this command is listed as follows:
+```
+```
+
+Run the following commands to build spatial co-expression hypergraphs for Slide-seq data:
+```
+cd src/build_graphs
+python 
+```
+
+The usage of this command is listed as follows:
+```
+```
+
+
+
 ### Build dendrogram of graphs
+Run the following commands to build dendrogram:
+```
+cd src/build_dendrogram
+python build_dendrogram.py --K 50 --degenedir "path/to/de_genes" --graphdir "path/to/gene_graphs" --outdir "path/to/save_output" --figdir "path/to/save_output_figure"
+```
+
+The usage of this command is listed as follows:
+```
+usage: build_dendrogram.py [-h] [--K [K]] [--degenedir [DEGENEDIR]] [--graphdir [GRAPHDIR]] [--outdir [OUTDIR]]
+                           [--figdir [FIGDIR]]
+
+Build dendrogram of graphs
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --K [K]               The number of top differentailly expressed genes considered to measure cell cluster
+                        similarities
+  --degenedir [DEGENEDIR]
+                        Path to the lists of differentailly expressed genes of cell clusters
+  --graphdir [GRAPHDIR]
+                        Path to the gene graphs of cell clusters
+  --outdir [OUTDIR]     Path to a directory where the dendrogram is saved for the input of the embedding algorithm
+  --figdir [FIGDIR]     Path to a directory where the figure of the dendrogram is saved
+```
+
 ### Learn gene embeddings
-Run the following commands:
+Run the following commands to learn gene embeddings:
 ```
 cd src/embedding
 python main.py --input "path/to/graph.list" --outdir "emb" --hierarchy "path/to/graph.hierarchy" --iter 150 --regstrength 1 --workers 8 --dimension 128
 ```
 
-The usage of this command is listed as follows.
+The usage of this command is listed as follows:
 ```
 usage: main.py [-h] [--input [INPUT]] [--outdir [OUTDIR]] [--hierarchy [HIERARCHY]] [--dimension DIMENSION]
                [--walk-length WALK_LENGTH] [--num-walks NUM_WALKS] [--window-size WINDOW_SIZE] [--iter ITER]
@@ -74,7 +131,7 @@ optional arguments:
 The software is an implementation of the method GIANT, jointly developed by Hao Chen, Nam D. Nguyen, Matthew Ruffalo, and Ziv Bar-Joseph from the [System Biology Group @ Carnegie Mellon University](http://sb.cs.cmu.edu/).
 
 ## Contact
-Contact us if you have any questions:
+Contact us if you have any questions:</br>
 Hao Chen: hchen4 at andrew.cmu.edu</br>
 Ziv Bar-Joseph: zivbj at andrew.cmu.edu</br>
 
