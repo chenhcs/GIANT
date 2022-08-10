@@ -11,8 +11,11 @@ def parse_args():
     parser.add_argument('--K', type=int, default=10,
                         help='Number of nearest neighbors')
 
-    parser.add_argument('--datatype', type=int,
+    parser.add_argument('--datatype', default='rna',
                         help='rna or slide')
+
+    parser.add_argument('--tissue', default='',
+                        help='name of the tissue, e.g., Heart')
 
     parser.add_argument('--datadir', default='',
                         help='Path to a the h5ad file of gene expression')
@@ -110,7 +113,7 @@ def main():
 
     K_neighbors = args.K
     dset = ad.read_h5ad(args.datadir)
-    ti = dset.split('_')[-1].split('.')[0]
+    ti = args.tissue
     df = pd.DataFrame(data=dset.layers['unscaled'].todense().T, index=dset.var.index, columns=dset.obs.index)
     df = df.loc[selected_genes.intersection(df.index)]
     for c in set(dset.obs['leiden']):

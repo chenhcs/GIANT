@@ -29,7 +29,7 @@ Use `python script.py --help` to check the specific usage of each command.
 - Run the following commands to build co-expression graphs for scRNA-seq data or Slide-seq data:
 ```
 cd src/build_graphs
-python coexpression_knn_graph.py --K 10 --datatype "rna" --datadir "path/to/h5ad" --genescopefile "path/to/gene_scope" --outdir "path/to/out_dir"
+python coexpression_knn_graph.py --K 10 --datatype "rna" --tissue "Heart" --datadir "path/to/h5ad" --genescopefile "path/to/gene_scope" --outdir "path/to/out_dir"
 ```
 
 - Run the following commands to build gene-TF hypergraphs for scATAC-seq data:
