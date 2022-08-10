@@ -14,6 +14,9 @@ def parse_args():
     parser.add_argument('--K', type=int, default=10,
                         help='Number of nearest neighbors. Default is 10.')
 
+    parser.add_argument('--tissue', default='',
+                        help='name of the tissue, e.g., Heart')
+
     parser.add_argument('--datadir', default='',
                         help='Path to a h5ad file of gene expression and cell locations')
 
@@ -46,7 +49,7 @@ def neighbor_graph(dist, k=None, epsilon=None, symmetrize=True):
   adj = np.zeros(dist.shape)
   if k is not None:
     # do k-nearest neighbors
-    nn = np.argsort(dist)[:,:min(k+1,len(dist))]
+    nn = np.argsort(dist)[:,:min(k,len(dist))]
     # nn's first column is the point idx, rest are neighbor idxs
     if symmetrize:
       for row,inds in enumerate(nn):
@@ -74,7 +77,6 @@ def coexp_knn_cross(df_c, df_c_neighbor, k):
     x_corr[unexp_inds_i, :] = 0.0
     x_corr[:, unexp_inds_j] = 0.0
     x_corr[np.isnan(x_corr)] = 0
-    np.fill_diagonal(x_corr, 0)
     x_corr = np.absolute(x_corr)
 
     adj = neighbor_graph(1 - x_corr, k, symmetrize=False)
@@ -105,21 +107,20 @@ tri = Delaunay(spat)
 adj_lst = {}
 for i in range(spat.shape[0]):
     adj_lst[e.obs.index[i]] = list(get_neighbor_vertex_ids_from_vertex_id(i, tri, e.obs.index))
-with open('overall_adjacency_list.txt', 'w') as f:
+with open(args.outdir + '/overall_adjacency_list.txt', 'w') as f:
     f.write(str(adj_lst))
 
 df = pd.DataFrame(data=e.layers['unscaled'].todense().T, index=e.var.index, columns=e.obs.index)
 selected_genes = set(load_gene_scope(args.genescopefile))
 df = df.loc[selected_genes.intersection(df.index)]
 
-outpath = args.outdir
 K_neighbors = args.K
-cell_neighbor_graph = 'overall_adjacency_list.txt'
+cell_neighbor_graph = args.outdir + '/overall_adjacency_list.txt'
 for c in set(e.obs['leiden']):
     df_c = df[e.obs[e.obs['leiden']==c].index]
     print(df_c)
     df_c_neighbor = neighborcell_gene_exp(df_c, df, cell_neighbor_graph)
 
     index_i, index_j = coexp_knn_cross(df_c.to_numpy(), df_c_neighbor.to_numpy(), K_neighbors)
-    write_graph_to_file(index_i, index_j, list(df.index), outdir + '/spatial_' + args.datadir.split('_')[-1].split('.')[0] + '_c' + c + '.edgelist')
+    write_graph_to_file(index_i, index_j, list(df.index), args.outdir + '/spatial_' + args.tissue + '_c' + c + '.edgelist')
     print('cluster ' + c + ' completed.')
