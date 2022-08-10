@@ -61,7 +61,7 @@ python main.py --input "../../graphs/graph.list" --outdir "emb" --hierarchy "../
 
 ### Identify enriched functions or gene regulons in different parts of the embedding space
 - Download gene annotations from the [GOA database](https://www.ebi.ac.uk/GOA/human_release).
-- Download the ontology from the [Gene Ontology database](http://geneontology.org/docs/download-ontology/).l
+- Download the ontology from the [Gene Ontology database](http://geneontology.org/docs/download-ontology/).
 - Run the following commands to split the embedding space into components (cluster genes in the whole space), then run enrichment analysis for each embedding component:
 ```
 cd src/analysis
