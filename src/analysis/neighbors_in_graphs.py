@@ -15,6 +15,9 @@ def parse_args():
     parser.add_argument('--emb', default='',
                         help='Gene embedding file')
 
+    parser.add_argument('--annotationfile', default='',
+                        help='Path to a file of gene annotations')
+
     parser.add_argument('--outdir', default='',
                         help='Path to a directory where the gene lists in clusters will be saved')
 
@@ -29,13 +32,11 @@ ensembl_data = EnsemblRelease(77)
 
 all_genes = set()
 fr = open(args.emb)
-nnodes, dim = fr.readline().split()
 while True:
     line = fr.readline()
     if not line:
         break
     items = line.split()
-    nodes.append(items[0])
     all_genes.add(items[0].split('__')[-1])
 
 fw = open(args.outdir + '/population.txt', 'w')
@@ -50,7 +51,6 @@ fw.close()
 fr.close()
 
 fr = open(args.emb)
-nnodes, dim = fr.readline().split()
 embs = []
 graphs = {}
 gene2idx = {}
@@ -61,7 +61,8 @@ while True:
     if not line:
         break
     items = line.split()
-    graph = items[0].split('edgelists_')[-1].split('.edgelist')[0]
+    graph = items[0].split('__')[0]
+    geneid = items[0].split('__')[1]
     if graph not in graphs:
         graphs[graph] = {}
         graphs[graph][geneid] = np.array([float(e) for e in items[1:]])
@@ -73,10 +74,10 @@ while True:
 
 for i, gene_id in enumerate(list(all_genes)):
     try:
-        gene = ensembl_data.gene_by_id(id_name[gene_id].split('.')[0])
+        gene = ensembl_data.gene_by_id(gene_id.split('.')[0])
         gene_name = gene.gene_name
     except ValueError:
-        gene_name = id_name[gene_id]
+        gene_name = gene_id
 
     print(i, len(all_genes), gene_id)
     pair_dist = []
@@ -115,10 +116,10 @@ for i, gene_id in enumerate(list(all_genes)):
             nn = np.argsort(dist)[:50]
             for ngene_id in list(gid[nn]):
                 try:
-                    gene = ensembl_data.gene_by_id(id_name[ngene_id].split('.')[0])
+                    gene = ensembl_data.gene_by_id(ngene_id.split('.')[0])
                     ngene_name = gene.gene_name
                 except ValueError:
-                    ngene_name = id_name[ngene_id]
+                    ngene_name = ngene_id
                 neighbor_genes.append(ngene_name)
         print(gp, len(neighbor_genes), len(set(neighbor_genes)))
         fw = open(args.outdir + '/' + gene_name + '_ingraphs_' + str(gp) + '.txt', 'w')
@@ -130,8 +131,8 @@ for i, gene_id in enumerate(list(all_genes)):
             fw.write(g + '\n')
         fw.close()
 
-fr = open(args.goafile)
-fw = open(args.goafile.split('/')[0] + '/goa_human_name.gaf', 'w')
+fr = open(args.annotationfile)
+fw = open('goa_human_name.gaf', 'w')
 while True:
     line = fr.readline()
     if not line:

@@ -55,24 +55,26 @@ python build_dendrogram.py --K 50 --degenedir "../../example_data/DE_genes/" --g
 - Run the following commands to learn gene embeddings:
 ```
 cd src/embedding
-python change_id.py --graphdir '../../graphs/edgelists/' #Map gene IDs to numbers for the model input
+python change_id.py --graphdir "../../graphs/edgelists/" #Map gene IDs to numbers for the model input
 python main.py --input "../../graphs/graph.list" --outdir "emb" --hierarchy "../../graphs/graph.hierarchy" --iter 20 --regstrength 1 --workers 8 --dimension 128
 ```
 
 ### Identify enriched functions or gene regulons in different parts of the embedding space
+- Download gene annotations from the [GOA database](https://www.ebi.ac.uk/GOA/human_release).
+- Download the ontology from the [Gene Ontology database](http://geneontology.org/docs/download-ontology/).l
 - Run the following commands to split the embedding space into components (cluster genes in the whole space), then run enrichment analysis for each embedding component:
 ```
 cd src/analysis
-python cluster_genes.py --emb "dir/to/gene_embedding" --resolution 50 --nneighbors 30 --annotationfile "dir/to/gene_annotations" --outdir "dir/to/out_dir"
-python GO_TF_enrichment.py "dir/to/cluster_0.txt" "dir/to/population.txt" "dir/to/gene_human_graph.gaf" --ev_exc=IEA --pval=0.05 --method=fdr_bh --pval_field=fdr_bh
+python cluster_genes.py --emb "../../example_data/gene.emb" --resolution 10 --nneighbors 30 --annotationfile "goa_human.gaf" --outdir "outdir"
+python GO_TF_enrichment.py "outdir/cluster_0.txt" "outdir/population.txt" "goa_human_graph.gaf" --ev_exc=IEA --pval=0.05 --method=fdr_bh --pval_field=fdr_bh
 ```
 
 ### Infer novel gene functions
-- Run the following commands to learn gene embeddings:
+- Run the following commands to cluster each gene's embeddings of different graphs, then infer the functions of each gene in each cluster by running enrichment analysis on its neighbor genes in the cluster:
 ```
 cd src/analysis
-python neighbors_in_graph.py --emb "dir/to/gene_embedding" --outdir "dir/to/out_dir"
-python GO_enrichment_in_neighbors.py "dir/to/neighbor_gene_list.txt" "dir/to/population.txt" "dir/to/gene_human_graph.gaf" --ev_exc=IEA --pval=0.05 --method=fdr_bh --pval_field=fdr_bh
+python neighbors_in_graphs.py --emb "../../example_data/gene.emb" --annotationfile "goa_human.gaf" --outdir "gene_list_outdir"
+python GO_enrichment_in_neighbors.py "gene_list_outdir/A2M_nlist_0.txt" "gene_list_outdir/population.txt" "goa_human_name.gaf" --ev_exc=IEA --pval=0.05 --method=fdr_bh --pval_field=fdr_bh
 ```
 
 ## Credits

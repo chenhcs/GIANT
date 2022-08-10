@@ -6,6 +6,7 @@ import networkx as nx
 import anndata as ad
 import scanpy as sc
 import pandas as pd
+import os
 from pyensembl import EnsemblRelease
 
 def parse_args():
@@ -31,7 +32,6 @@ def parse_args():
 args = parse_args()
 
 fr = open(args.emb)
-nnodes, dim = fr.readline().split()
 nodes = []
 embs = []
 ensemblid = set()
@@ -44,6 +44,7 @@ while True:
     embs.append([float(e) for e in items[1:]])
     ensemblid.add(items[0].split('__')[-1])
 
+nodes = np.array(nodes)
 embs = np.array(embs)
 print(nodes[:5])
 print(embs, embs.shape)
@@ -82,7 +83,7 @@ for cluster in set(adata.obs['leiden']):
     nodes = list(adata.obs[adata.obs['leiden']==cluster].index)
     fw = open(args.outdir + '/cluster_' + cluster + '.txt', 'w')
     for node in nodes:
-        graph = node.split('.edgelist')[0].split('_edgelists_')[1]
+        graph = node.split('__')[0]
         id = node.split('__')[-1]
         if id in id_name:
             fw.write(graph + '_' + id_name[id] + '\n')
@@ -92,7 +93,7 @@ genes = []
 geneingraphs = {}
 fw = open(args.outdir + '/population.txt', 'w')
 for node in list(adata.obs.index):
-    graph = node.split('.edgelist')[0].split('_edgelists_')[1]
+    graph = node.split('__')[0]
     id = node.split('__')[-1]
     if id in id_name:
         if id_name[id] not in geneingraphs:
@@ -105,8 +106,8 @@ fw.close()
 
 genes = set(genes)
 
-fr = open(args.goafile)
-fw = open(args.goafile.split('/')[0] + '/goa_human_graph.gaf', 'w')
+fr = open(args.annotationfile)
+fw = open('goa_human_graph.gaf', 'w')
 while True:
     line = fr.readline()
     if not line:
@@ -116,6 +117,7 @@ while True:
     else:
         items = line.split('\t')
         line = line.replace(items[1], items[2])
+        items = line.split('\t')
         if items[1] in genes:
             for graph in geneingraphs[items[1]]:
                 line_new = line.replace(items[1], graph + '_' + items[1])
