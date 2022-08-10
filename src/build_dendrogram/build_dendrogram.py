@@ -83,18 +83,19 @@ args = parse_args()
 
 cellcluster_degene = {}
 for file in glob.glob(args.degenedir + '/*'):
+    print(file)
     degenes = []
     with open(file) as fr:
         for line in fr:
             degenes.append(line.split()[0])
-    cellcluster_degene[file.split('/')[1].split('.')[0]] = set(degenes[:args.K])
+    cellcluster_degene[file.split('/')[-1].split('.')[0]] = set(degenes[:args.K])
 
 D = np.zeros([len(cellcluster_degene.keys()), len(cellcluster_degene.keys())])
 ccl = list(cellcluster_degene.keys())
 for i,cc1 in enumerate(ccl):
     for j,cc2 in enumerate(ccl):
         #print(len(group_markers[gp1]), len(group_markers[gp2]))
-        jaccard = len(group_markers[cc1].intersection(cellcluster_degene[cc2])) / len(group_markers[cc1].union(cellcluster_degene[cc2]))
+        jaccard = len(cellcluster_degene[cc1].intersection(cellcluster_degene[cc2])) / len(cellcluster_degene[cc1].union(cellcluster_degene[cc2]))
         D[i,j] = 1 - jaccard
 print(D)
 build_hierarchy(D, ccl, args.outdir, args.graphdir, args.figdir)

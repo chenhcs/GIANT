@@ -136,4 +136,4 @@ for peak_file in glob.glob(dataset + '/*peaks.txt'):
     peak_gene = peak_to_gene(peak_list, gene_ranges, args.bpupstream)
 
     gene_tf = gene_to_tf(peak_gene, peak_tf)
-    write_graph_to_file(gene_tf, args.outdir + '/atac_' + args.tissue + '_' + str(i) + '.edgelist')
+    write_graph_to_file(gene_tf, args.outdir + '/atac_' + args.tissue + '_c' + str(i) + '.edgelist')

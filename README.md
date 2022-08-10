@@ -29,34 +29,34 @@ Use `python script.py --help` to check the specific usage of each command.
 - Run the following commands to build co-expression graphs for scRNA-seq data or Slide-seq data:
 ```
 cd src/build_graphs
-python coexpression_knn_graph.py --K 10 --datatype "rna" --tissue "Heart" --datadir "path/to/h5ad" --genescopefile "path/to/gene_scope" --outdir "path/to/out_dir"
+python coexpression_knn_graph.py --K 10 --datatype "rna" --tissue 'Heart' --datadir "../../example_data/secondary_analysis.h5ad" --genescopefile "../../example_data/gene_scope.txt" --outdir "../../graphs/edgelists"
 ```
 
 - Run the following commands to build gene-TF hypergraphs for scATAC-seq data:
 ```
 cd src/build_graphs
-python atacseq_hypergraph.py --bpupstream 500 --datadir "path/to/peak_files" --genescopefile "path/to/gene_scope" --generangefile "path/to/gene_ranges" --outdir "path/to/out_dir"
+python atacseq_hypergraph.py --bpupstream 500 --tissue "Thymus" --datadir "../../example_data/atac_peaks" --genescopefile "../../example_data/gene_scope.txt" --generangefile "../../example_data/GenesRanges.csv" --outdir "../../graphs/edgelists/"
 ```
-[//]: <> (This is also a comment.)
 
 - Run the following commands to build spatial co-expression hypergraphs for Slide-seq data:
 ```
 cd src/build_graphs
-python spatial_coexpression_knn_graph.py --K 10 --datadir "path/to/h5ad" --genescopefile "path/to/gene_scope" --outdir "path/to/out_dir"
+python spatial_coexpression_knn_graph.py --K 10 --tissue "Kidney" --datadir "../../example_data/spatial_secondary_analysis.h5ad" --genescopefile "../../example_data/gene_scope.txt" --outdir "../../graphs/edgelists/"
 ```
 
 ### Build dendrogram of graphs
 - Run the following commands to build dendrogram:
 ```
 cd src/build_dendrogram
-python build_dendrogram.py --K 50 --degenedir "path/to/de_genes" --graphdir "path/to/gene_graphs" --outdir "path/to/save_output" --figdir "path/to/save_output_figure"
+python build_dendrogram.py --K 50 --degenedir "../../example_data/DE_genes/" --graphdir "../../graphs/edgelists" --outdir "../../graphs/" --figdir "../../graphs/"
 ```
 
 ### Learn gene embeddings
 - Run the following commands to learn gene embeddings:
 ```
 cd src/embedding
-python main.py --input "path/to/graph.list" --outdir "emb" --hierarchy "path/to/graph.hierarchy" --iter 150 --regstrength 1 --workers 8 --dimension 128
+python change_id.py --graphdir '../../graphs/edgelists/' #Map gene IDs to numbers for the model input
+python main.py --input "../../graphs/graph.list" --outdir "emb" --hierarchy "../../graphs/graph.hierarchy" --iter 20 --regstrength 1 --workers 8 --dimension 128
 ```
 
 ### Identify enriched functions or gene regulons in different parts of the embedding space
