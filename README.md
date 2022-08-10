@@ -1,5 +1,5 @@
 # GIANT
-GIANT (Gene-based data Integration and ANalysis Technique) is a method for unified analysis of atlas-level single cell data. GIANT generates a unified gene embedding space across multiple data modalities and tissues. GIANT first constructs gene graphs for cell clusters of each tissue from each data modality. A dendrogram is then built to connect the gene graphs in a hierarchy. GIANT next combines the gene graphs and the dendrogram to recursively embed genes in the graphs to a common latent space. Locations of genes in the space reflect their functions in their cell clusters.
+GIANT (Gene-based data Integration and ANalysis Technique) is a method for unified analysis of atlas-level single cell data. The method generates a unified gene embedding space across multiple data modalities and tissues. GIANT first constructs gene graphs for cell clusters of each tissue from each data modality. A dendrogram is then built to connect the gene graphs in a hierarchy. GIANT next combines the gene graphs and the dendrogram to recursively embed genes in the graphs to a common latent space. Locations of genes in the space reflect their functions in their cell clusters.
 
 ## Dependencies
 - python 3.9.7</br>
