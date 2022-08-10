@@ -9,8 +9,11 @@ def parse_args():
     parser.add_argument('--bpupstream', type=int, default=500,
                         help='Promoter region: within how many base pairs upstream of the transcription start site. Default is 500.')
 
+    parser.add_argument('--tissue', default='',
+                        help='name of the tissue, e.g., Heart')
+
     parser.add_argument('--datadir', default='',
-                        help='Path to a directory that saves the h5ad files of gene expression')
+                        help='Path to a directory that saves the peak files')
 
     parser.add_argument('--genescopefile', default='',
                         help='Path to a file that lists the genes considered in this study')
@@ -133,4 +136,4 @@ for peak_file in glob.glob(dataset + '/*peaks.txt'):
     peak_gene = peak_to_gene(peak_list, gene_ranges, args.bpupstream)
 
     gene_tf = gene_to_tf(peak_gene, peak_tf)
-    write_graph_to_file(gene_tf, args.outdir + '/atac_' + dataset.split('/')[-1] + '_c' + str(i) + '.edgelist')
+    write_graph_to_file(gene_tf, args.outdir + '/atac_' + args.tissue + '_' + str(i) + '.edgelist')
