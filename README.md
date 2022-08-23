@@ -11,14 +11,16 @@ The software has been tested on the CentOS Linux 7 system.
 - cython 0.29.30</br>
 - goatools 1.1.12</br>
 - joblib 1.1.0</br>
+- leidenalg 0.8.10</br>
+- matplotlib 3.5.3</br>
 - networkx 2.6.3</br>
-- numpy 1.20.3</br>
-- pandas 1.3.4</br>
+- numpy 1.22.4</br>
+- pandas 1.4.3</br>
 - pyensembl 1.9.4</br>
 - scanpy 1.8.2</br>
 - scikit-learn 1.0.1</br>
-- scipy 1.7.2</br>
-- setuptools 59.2.0</br>
+- scipy 1.9.0</br>
+- setuptools 63.4.1</br>
 
 ### Installation
 It is recommended to create a virtual environment using [Conda](https://conda.io/projects/conda/en/latest/index.html). After successfully installing Anaconda/Miniconda, create an environment using the provided `environment.yml` file:
@@ -37,6 +39,7 @@ python setup.py build_ext --inplace
 Below is the description of command usages on example data. Use `python script.py --help` to check the specific usage of each command.
 
 ### Build gene graphs
+- Unzip the `.h5ad` files in the `example_data` folder.
 - Run the following commands to build co-expression graphs for scRNA-seq data or Slide-seq data:
 ```
 cd src/build_graphs
