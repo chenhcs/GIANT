@@ -36,7 +36,7 @@ python setup.py build_ext --inplace
 ```
 
 ## Usage
-Below is the description of command usages on example data. Use `python script.py --help` to check the specific usage of each command.
+Below is the instruction of command usages on example data. Use `python script.py --help` to check the specific usage of each command.
 
 ### Build gene graphs
 - Unzip the `.h5ad` files in the `example_data` folder.
