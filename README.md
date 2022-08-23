@@ -20,6 +20,12 @@ The software has been tested on the CentOS Linux 7 system.
 - scipy 1.7.2</br>
 - setuptools 59.2.0</br>
 
+### Installation
+It is recommended to create a virtual environment using [Conda](https://conda.io/projects/conda/en/latest/index.html). After successfully installing Anaconda/Miniconda, create an environment using the provided `environment.yml` file:
+```
+conda env create -f environment.yml
+```
+
 GIANT supports distributed training based on the [Gensim](https://radimrehurek.com/gensim/apiref.html#api-reference) package implemented in Cython. Following the steps to compile the Cython code:
 ```
 cd src/embedding
