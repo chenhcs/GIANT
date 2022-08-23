@@ -24,6 +24,7 @@ The software has been tested on the CentOS Linux 7 system.
 It is recommended to create a virtual environment using [Conda](https://conda.io/projects/conda/en/latest/index.html). After successfully installing Anaconda/Miniconda, create an environment using the provided `environment.yml` file:
 ```
 conda env create -f environment.yml
+conda activate GIANT-env
 ```
 
 GIANT supports distributed training based on the [Gensim](https://radimrehurek.com/gensim/apiref.html#api-reference) package implemented in Cython. Following the steps to compile the Cython code:
@@ -33,7 +34,7 @@ python setup.py build_ext --inplace
 ```
 
 ## Usage
-Use `python script.py --help` to check the specific usage of each command.
+Below is the description of command usages on example data. Use `python script.py --help` to check the specific usage of each command.
 
 ### Build gene graphs
 - Run the following commands to build co-expression graphs for scRNA-seq data or Slide-seq data:
