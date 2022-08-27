@@ -233,13 +233,13 @@ class encoder():
                 all_nodes, internal_vectors, tmp_fname)
 
             if itr > 0 and (itr + 1) % 10 == 0:
-                fname = pjoin(self.out_dir, 'leaf_vectors_' + str(itr) + '.emb')
+                fname = pjoin(self.out_dir, 'gene_vectors_' + str(itr) + '.emb')
                 self.log.info('Saving leaf vectors: %s' % fname)
                 self.model.save_word2vec_format(fname)
 
         self.log.info('Done!')
 
-        fname = pjoin(self.out_dir, 'leaf_vectors.emb')
+        fname = pjoin(self.out_dir, 'gene_vectors.emb')
         self.log.info('Saving leaf vectors: %s' % fname)
         self.model.save_word2vec_format(fname)
 

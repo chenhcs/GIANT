@@ -42,33 +42,36 @@ Below is the instruction of command usages on example data. Use `python script.p
 
 ### Build gene graphs
 - Unzip the `.h5ad` files in the `example_data` folder.
-- Run the following commands to build co-expression graphs for scRNA-seq data or Slide-seq data:
+- The `.h5ad` files are in the standard output format of the [Scanpy](https://scanpy.readthedocs.io/en/stable/index.html) pipelines.
+- Run the following commands to build co-expression graphs for scRNA-seq data or Slide-seq data, the graphs will be saved in the specified `--outdir`:
 ```
 cd src/build_graphs
 python coexpression_knn_graph.py --K 10 --datatype "rna" --tissue 'Heart' --datadir "../../example_data/secondary_analysis.h5ad" --genescopefile "../../example_data/gene_scope.txt" --outdir "../../graphs/edgelists"
 ```
 
-- Run the following commands to build gene-TF hypergraphs for scATAC-seq data:
+- The `.narrowPeak` files used in this step are generated from [snap files](https://github.com/r3fang/SnapATAC/wiki/FAQs#bam_snap) using the [SnapATAC](https://github.com/r3fang/SnapATAC/blob/master/examples/10X_brain_5k/README.md#peak_call) package. Peaks that contain TF motifs (`*_peak_by_tf.txt`) can be identified using the [motifmatchr](https://github.com/GreenleafLab/motifmatchr) package with TF binding motifs from the [JASPAR database](https://jaspar.genereg.net/)(`*_tf_motifs.txt`).
+- Run the following commands to build gene-TF hypergraphs for scATAC-seq data, the graphs will be saved in the specified `--outdir`:
 ```
 cd src/build_graphs
 python atacseq_hypergraph.py --bpupstream 500 --tissue "Thymus" --datadir "../../example_data/atac_peaks" --genescopefile "../../example_data/gene_scope.txt" --generangefile "../../example_data/GenesRanges.csv" --outdir "../../graphs/edgelists/"
 ```
 
-- Run the following commands to build spatial co-expression hypergraphs for Slide-seq data:
+- Run the following commands to build spatial co-expression hypergraphs for Slide-seq data, the graphs will be saved in the specified `--outdir`:
 ```
 cd src/build_graphs
 python spatial_coexpression_knn_graph.py --K 10 --tissue "Kidney" --datadir "../../example_data/spatial_secondary_analysis.h5ad" --genescopefile "../../example_data/gene_scope.txt" --outdir "../../graphs/edgelists/"
 ```
 
 ### Build dendrogram of graphs
-- Run the following commands to build dendrogram:
+- The differential genes used in this step can be computed from the gene expression/activity matrices using the [Scanpy](https://scanpy-tutorials.readthedocs.io/en/latest/pbmc3k.html#Finding-marker-genes) package.
+- Run the following commands to build dendrogram, the dendrogram edges will be saved in the specified `--outdir`, a figure of the dendrogram will be saved in the specified `--figdir`:
 ```
 cd src/build_dendrogram
 python build_dendrogram.py --K 50 --degenedir "../../example_data/DE_genes/" --graphdir "../../graphs/edgelists" --outdir "../../graphs/" --figdir "../../graphs/"
 ```
 
 ### Learn gene embeddings
-- Run the following commands to learn gene embeddings:
+- Run the following commands to learn gene embeddings, the generated embedding file `gene_vectors.emb` will be saved in the specified `--outdir`:
 ```
 cd src/embedding
 python change_id.py --graphdir "../../graphs/edgelists/" #Map gene IDs to numbers for the model input
