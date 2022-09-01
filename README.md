@@ -84,6 +84,7 @@ python main.py --input "../../graphs/graph.list" --outdir "emb" --hierarchy "../
 - Run the following commands to split the embedding space into components (cluster genes in the whole space), then run enrichment analysis for each embedding component:
 ```
 cd src/analysis
+python format_emb_file.py --emb '../embedding/emb/gene_vectors.emb' --idmap '../../graphs/edgelists/gmap.map' --outdir './'
 python cluster_genes.py --emb "../../example_data/gene.emb" --resolution 10 --nneighbors 30 --annotationfile "goa_human.gaf" --outdir "outdir"
 python GO_TF_enrichment.py "outdir/cluster_0.txt" "outdir/population.txt" "goa_human_graph.gaf" --ev_exc=IEA --pval=0.05 --method=fdr_bh --pval_field=fdr_bh
 ```
