@@ -75,9 +75,9 @@ def peak_to_tf(peak_list, motif_list, match_file):
             i = int(i) - 1
             j = int(j) - 1
             if peak_list[i] not in peak_tf:
-                peak_tf[peak_list[i]] = [tf.split('(')[0] for tf in motif_list[j].split('_')[1].split('::')]
+                peak_tf[peak_list[i]] = [tf for tf in motif_list[j].split('_')[1].split('::')]
             else:
-                peak_tf[peak_list[i]].extend([tf.split('(')[0] for tf in motif_list[j].split('_')[1].split('::')])
+                peak_tf[peak_list[i]].extend([tf for tf in motif_list[j].split('_')[1].split('::')])
     return peak_tf
 
 def peak_to_gene(peak_list, gene_ranges, bpupstream):
