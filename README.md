@@ -97,6 +97,9 @@ python neighbors_in_graphs.py --emb "../../example_data/gene.emb" --annotationfi
 python GO_enrichment_in_neighbors.py "gene_list_outdir/A2M_nlist_0.txt" "gene_list_outdir/population.txt" "goa_human_name.gaf" --ev_exc=IEA --pval=0.05 --method=fdr_bh --pval_field=fdr_bh
 ```
 
+### Pretrained embeddings
+Pretrained gene embeddings for both the HuBMAP dataset and the human fetal dataset are available in the `embeddings` folder.
+
 ## Credits
 The software is an implementation of the method GIANT, jointly developed by Hao Chen, Nam D. Nguyen, Matthew Ruffalo, and Ziv Bar-Joseph from the [System Biology Group @ Carnegie Mellon University](http://sb.cs.cmu.edu/).
 
